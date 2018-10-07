@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Serialization;
 using System.Linq;
 using System.Net.Mime;
 
@@ -16,6 +15,10 @@ namespace BlazorDualMode.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            // Adds the Server-Side Blazor services, and those registered by the app project's startup.
+            // This doesn't hurt client side
+            services.AddServerSideBlazor<Client.Startup>();
 
             services.AddResponseCompression(options =>
             {
@@ -42,7 +45,8 @@ namespace BlazorDualMode.Server
                 routes.MapRoute(name: "default", template: "{controller}/{action}/{id?}");
             });
 
-            app.UseBlazor<Client.Startup>();
+            // This will also serve a client side app, it just registers SignalR in addition
+            app.UseServerSideBlazor<Client.Startup>();
         }
     }
 }
