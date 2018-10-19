@@ -1,0 +1,31 @@
+﻿@inject BlazorDualMode.Shared.AppState appState
+
+@if (!appState.IsServerSideHosted)
+{
+    <a href="#" onclick="window.location = '/?mode=server'" class="ml-md-auto">
+        @LinkName
+    </a>
+    appState.IsServerSideHosted = true;
+}
+else
+{
+    <a href="#" onclick="window.location = '/'" class="ml-md-auto">
+        @LinkName
+    </a>
+    appState.IsServerSideHosted = false;
+}
+
+@functions
+{
+    public string LinkName = "ServerSide";
+
+    void UpdateLinkName()
+    {
+        LinkName = appState.IsServerSideHosted ? "ClientSide" : "ServerSide";
+    }
+
+    protected override void OnAfterRender()
+    {
+        UpdateLinkName();
+    }
+}

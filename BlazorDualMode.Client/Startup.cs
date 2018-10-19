@@ -1,3 +1,4 @@
+using BlazorDualMode.Shared;
 using Microsoft.AspNetCore.Blazor.Builder;
 using Microsoft.AspNetCore.Blazor.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,8 @@ namespace BlazorDualMode.Client
                     };
                 });
             }
+
+            services.AddSingleton<AppState>();
         }
 
         public void Configure(IBlazorApplicationBuilder app)
